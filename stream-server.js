@@ -6,6 +6,7 @@ if( process.argv.length < 3 ) {
 	process.exit();
 }
 
+//TODO change STREAM_SECRET to process.env.STREAM_SECRET
 var STREAM_SECRET = process.argv[2],
 	STREAM_PORT = process.argv[3] || 8082,
 	WEBSOCKET_PORT = process.argv[4] || 8084,
@@ -45,7 +46,7 @@ socketServer.on('connection', function(socket) {
 	socket.send(streamHeader, {binary:true});
 
 	console.log( 'New WebSocket Connection ('+socketServer.clients.length+' total)' );
-	
+
 	socket.on('close', function(code, message){
 		console.log( 'Disconnected WebSocket ('+socketServer.clients.length+' total)' );
 	});
@@ -66,7 +67,7 @@ var streamServer = require('http').createServer( function(request, response) {
 
 	if( params[0] == STREAM_SECRET ) {
 		console.log(
-			'Stream Connected: ' + request.socket.remoteAddress + 
+			'Stream Connected: ' + request.socket.remoteAddress +
 			':' + request.socket.remotePort + ' size: ' + width + 'x' + height
 		);
 		request.on('data', function(data){
@@ -75,7 +76,7 @@ var streamServer = require('http').createServer( function(request, response) {
 	}
 	else {
 		console.log(
-			'Failed Stream Connection: '+ request.socket.remoteAddress + 
+			'Failed Stream Connection: '+ request.socket.remoteAddress +
 			request.socket.remotePort + ' - wrong secret.'
 		);
 		response.end();
