@@ -1,0 +1,20 @@
+{
+  "name": "rpiip",
+  "description": "sms to twillio, and the pi speaks!",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/resin-io/rpiip.git"
+  },
+  "scripts": {
+    "preinstall": "bash deps.sh"
+  },
+  "version": "0.0.3",
+  "dependencies": {
+    "express": "^4.4.5",
+    "ngrok": "^0.1.97",
+    "ws":"~0.4.31"
+  },
+  "engines": {
+    "node": "0.10.22"
+  }
+}
