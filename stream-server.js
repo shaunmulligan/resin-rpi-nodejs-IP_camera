@@ -92,15 +92,6 @@ var streamServer = require('http').createServer( function(request, response) {
 	}
 }).listen(STREAM_PORT);
 
-//Start MPEG stream server
-// var spawn = require('child_process').spawn;
-// spawn('avconv -s 320x240 -f video4linux2 -i /dev/video0 -f mpeg1video -b 800k -r 30 http://127.0.0.1:'+STREAM_PORT+'/'+STREAM_SECRET+'/320/240/',[''],
-// 			{
-// 			    detached: true,
-// 			    stdio: [ 'ignore', 'ignore', 'ignore' ]
-// 			}
-// 			);
-
 console.log('Listening for MPEG Stream on http://127.0.0.1:'+STREAM_PORT+'/<secret>/<width>/<height>');
 console.log('Awaiting WebSocket connections on ws://127.0.0.1:'+WEBSOCKET_PORT+'/');
 
