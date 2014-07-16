@@ -1,15 +1,15 @@
-if( process.argv.length < 3 ) {
+if( process.argv.length < 2 ) {
 	console.log(
 		'Usage: \n' +
-		'node stream-server.js <secret> [<stream-port> <websocket-port>]'
+		'node stream-server.js [<stream-port> <websocket-port>]'
 	);
 	process.exit();
 }
 
 //TODO change STREAM_SECRET to process.env.STREAM_SECRET
-var STREAM_SECRET = process.argv[2],
-	STREAM_PORT = process.argv[3] || 8082,
-	WEBSOCKET_PORT = process.argv[4] || 8084,
+var STREAM_SECRET = process.env.STREAM_SECRET,
+	STREAM_PORT = process.argv[2] || 8082,
+	WEBSOCKET_PORT = process.argv[3] || 8084,
 	STREAM_MAGIC_BYTES = 'jsmp'; // Must be 4 bytes
 
 var width = 320,
@@ -32,7 +32,6 @@ ngrok.connect({
     console.log(err, url)
 });
 server.listen(WEBSOCKET_PORT);
-
 
 // Websocket Server
 var socketServer = new (require('ws').Server)({server: server});
@@ -82,6 +81,14 @@ var streamServer = require('http').createServer( function(request, response) {
 		response.end();
 	}
 }).listen(STREAM_PORT);
+
+var spawn = require('child_process').spawn;
+spawn('avconv -s 320x240 -f video4linux2 -i /dev/video0 -f mpeg1video -b 800k -r 30 http://127.0.0.1:'+STREAM_PORT+'/'+STREAM_SECRET+'/320/240/',[''],
+			{
+			    detached: true,
+			    stdio: [ 'ignore', 'ignore', 'ignore' ]
+			}
+			);
 
 console.log('Listening for MPEG Stream on http://127.0.0.1:'+STREAM_PORT+'/<secret>/<width>/<height>');
 console.log('Awaiting WebSocket connections on ws://127.0.0.1:'+WEBSOCKET_PORT+'/');
