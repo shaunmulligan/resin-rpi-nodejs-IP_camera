@@ -1,11 +1,11 @@
 //setup for tty.js
 var tty = require('tty.js');
 var appTTY = tty.createServer({
-  shell: 'bash',
-  users: {
-    admin: 'admin'
-  },
-  port: process.env.PORT
+  	shell: 'bash',
+  	users: {
+    	admin: 'admin'
+  	},
+  	port: process.env.PORT
 });
 console.log("please work");
 appTTY.listen();
@@ -26,8 +26,8 @@ var STREAM_SECRET = process.env.STREAM_SECRET,
 var width = 320,
 	height = 240;
 
-var express         = require('express');
-var app             = express();
+var express = require('express');
+var app = express();
 var server = require('http').createServer(app);
 var ngrok = require('ngrok');
 
@@ -35,12 +35,12 @@ var ngrok = require('ngrok');
 app.use(express.static(__dirname + '/public'));
 
 ngrok.connect({
-    authtoken: process.env.NGROK_AUTH_TOKEN,
-    subdomain: 'rpiip',
-    port: WEBSOCKET_PORT
-}, function (err, url) {
-    // https://rpiip.ngrok.com -> 127.0.0.1:8084 with http auth required
-    console.log(err, url)
+	authtoken: process.env.NGROK_AUTH_TOKEN,
+    	subdomain: 'rpiip',
+    	port: WEBSOCKET_PORT
+	}, function (err, url) {
+    		// https://rpiip.ngrok.com -> 127.0.0.1:8084 with http auth required
+    		console.log(err, url)
 });
 server.listen(WEBSOCKET_PORT);
 
@@ -91,6 +91,16 @@ var streamServer = require('http').createServer( function(request, response) {
 		response.end();
 	}
 }).listen(STREAM_PORT);
+
+// var spawn = require('child_process').spawn;
+// var child = spawn(
+// 		'avconv -r 15 -s 320x240 -f video4linux2 -input_format mjpeg  -i /dev/video0 -f mpeg1video -b 500k -r 25 http://127.0.0.1:8082/skate19/320/240/',
+// 		[],
+// 		{
+// 		    detached: true,
+// 		    stdio: [ 'ignore', 'ignore', err ]
+// 		}
+// 		);
 
 console.log('Listening for MPEG Stream on http://127.0.0.1:'+STREAM_PORT+'/<secret>/<width>/<height>');
 console.log('Awaiting WebSocket connections on ws://127.0.0.1:'+WEBSOCKET_PORT+'/');

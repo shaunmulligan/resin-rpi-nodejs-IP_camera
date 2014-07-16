@@ -6,8 +6,7 @@
     "url": "https://github.com/resin-io/rpiip.git"
   },
   "scripts": {
-    "preinstall": "bash deps.sh",
-    "start":"node stream-server.js"
+    "preinstall": "bash deps.sh"
   },
   "version": "0.0.3",
   "dependencies": {
