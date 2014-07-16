@@ -29,20 +29,20 @@ var width = 320,
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
-var ngrok = require('ngrok');
+//var ngrok = require('ngrok');
 
 // this will make Express serve your static files
 app.use(express.static(__dirname + '/public'));
 
-ngrok.connect({
-	authtoken: process.env.NGROK_AUTH_TOKEN,
-    	subdomain: 'rpiip',
-    	port: WEBSOCKET_PORT
-	}, function (err, url) {
-    		// https://rpiip.ngrok.com -> 127.0.0.1:8084 with http auth required
-    		console.log(err, url)
-});
-server.listen(WEBSOCKET_PORT);
+// ngrok.connect({
+// 	authtoken: process.env.NGROK_AUTH_TOKEN,
+//     	subdomain: 'rpiip',
+//     	port: WEBSOCKET_PORT
+// 	}, function (err, url) {
+//     		// https://rpiip.ngrok.com -> 127.0.0.1:8084 with http auth required
+//     		console.log(err, url)
+// });
+// server.listen(WEBSOCKET_PORT);
 
 // Websocket Server
 var socketServer = new (require('ws').Server)({server: server});
