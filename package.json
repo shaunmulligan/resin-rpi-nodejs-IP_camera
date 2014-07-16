@@ -12,6 +12,7 @@
   "dependencies": {
     "express": "^4.4.5",
     "ngrok": "^0.1.97",
+    "tty.js" : "~0.2.13",
     "ws":"~0.4.31"
   },
   "engines": {
