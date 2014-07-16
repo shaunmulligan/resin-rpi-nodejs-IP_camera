@@ -8,8 +8,8 @@ if( process.argv.length < 2 ) {
 
 //TODO change STREAM_SECRET to process.env.STREAM_SECRET
 var STREAM_SECRET = process.env.STREAM_SECRET,
-	STREAM_PORT = process.argv[2] || 8082,
-	WEBSOCKET_PORT = process.argv[3] || 8084,
+	STREAM_PORT = 8082;//process.argv[2] || 8082,
+	WEBSOCKET_PORT = 8084;// process.argv[3] || 8084,
 	STREAM_MAGIC_BYTES = 'jsmp'; // Must be 4 bytes
 
 var width = 320,
@@ -58,7 +58,6 @@ socketServer.broadcast = function(data, opts) {
 	}
 };
 
-
 // HTTP Server to accept incomming MPEG Stream
 var streamServer = require('http').createServer( function(request, response) {
 	var params = request.url.substr(1).split('/');
@@ -84,13 +83,13 @@ var streamServer = require('http').createServer( function(request, response) {
 }).listen(STREAM_PORT);
 
 //Start MPEG stream server
-// var spawn = require('child_process').spawn;
-// spawn('avconv -s 320x240 -f video4linux2 -i /dev/video0 -f mpeg1video -b 800k -r 30 http://127.0.0.1:'+STREAM_PORT+'/'+STREAM_SECRET+'/320/240/',[''],
-// 			{
-// 			    detached: true,
-// 			    stdio: [ 'ignore', 'ignore', 'ignore' ]
-// 			}
-// 			);
+var spawn = require('child_process').spawn;
+spawn('avconv -s 320x240 -f video4linux2 -i /dev/video0 -f mpeg1video -b 800k -r 30 http://127.0.0.1:'+STREAM_PORT+'/'+STREAM_SECRET+'/320/240/',[''],
+			{
+			    detached: true,
+			    stdio: [ 'ignore', 'ignore', 'ignore' ]
+			}
+			);
 
 console.log('Listening for MPEG Stream on http://127.0.0.1:'+STREAM_PORT+'/<secret>/<width>/<height>');
 console.log('Awaiting WebSocket connections on ws://127.0.0.1:'+WEBSOCKET_PORT+'/');
