@@ -19,8 +19,8 @@ if( process.argv.length < 2 ) {
 }
 
 var STREAM_SECRET = process.env.STREAM_SECRET,
-	STREAM_PORT = 8082;//process.argv[2] || 8082,
-	WEBSOCKET_PORT = 8084;// process.argv[3] || 8084,
+	STREAM_PORT = process.argv[2] || 8082,
+	WEBSOCKET_PORT = process.argv[3] || 8084,
 	STREAM_MAGIC_BYTES = 'jsmp'; // Must be 4 bytes
 
 var width = 320,
@@ -92,15 +92,6 @@ var streamServer = require('http').createServer( function(request, response) {
 	}
 }).listen(STREAM_PORT);
 
-// var spawn = require('child_process').spawn;
-// var child = spawn(
-// 		'avconv -r 15 -s 320x240 -f video4linux2 -input_format mjpeg  -i /dev/video0 -f mpeg1video -b 500k -r 25 http://127.0.0.1:8082/skate19/320/240/',
-// 		[],
-// 		{
-// 		    detached: true,
-// 		    stdio: [ 'ignore', 'ignore', err ]
-// 		}
-// 		);
 
 console.log('Listening for MPEG Stream on http://127.0.0.1:'+STREAM_PORT+'/<secret>/<width>/<height>');
 console.log('Awaiting WebSocket connections on ws://127.0.0.1:'+WEBSOCKET_PORT+'/');
