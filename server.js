@@ -5,7 +5,7 @@ var appTTY = tty.createServer({
   	users: {
     	admin: 'admin'
   	},
-  	port: process.env.PORT
+  	port: process.env.PORT || 8000
 });
 console.log("please work");
 appTTY.listen();
