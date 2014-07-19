@@ -4,13 +4,25 @@ apt-get upgrade -y
 #apt-get install dialog
 apt-get install -y libav-tools
 
-apt-get install libjpeg8-dev imagemagick libv4l-dev
-ln -s /usr/include/linux/videodev2.h /usr/include/linux/videodev.h
-wget http://sourceforge.net/code-snapshots/svn/m/mj/mjpg-streamer/code/mjpg-streamer-code-182.zip
-unzip mjpg-streamer-code-182.zip
-cd mjpg-streamer-code-182/mjpg-streamer
-make mjpg_streamer input_file.so output_http.so
+# Install dev version of libjpeg
+sudo apt-get install libjpeg62-dev
 
-cp mjpg_streamer /usr/local/bin
-cp output_http.so input_file.so /usr/local/lib/
-cp -R www /usr/local/www
+# Install cmake
+sudo apt-get install cmake
+
+# Download mjpg-streamer with raspicam plugin
+git clone https://github.com/jacksonliam/mjpg-streamer.git ~/mjpg-streamer
+
+# Change directory
+cd ~/mjpg-streamer/mjpg-streamer-experimental
+
+# Compile
+make clean all
+
+# Replace old mjpg-streamer
+sudo rm -rf /opt/mjpg-streamer
+sudo mv ~/mjpg-streamer/mjpg-streamer-experimental /opt/mjpg-streamer
+sudo rm -rf ~/mjpg-streamer
+
+# Begin streaming
+LD_LIBRARY_PATH=/opt/mjpg-streamer/ /opt/mjpg-streamer/mjpg_streamer -i "input_raspicam.so -fps 15 -q 50 -x 640 -y 480" -o "output_http.so -p 9000 -w /opt/mjpg-streamer/www" &
